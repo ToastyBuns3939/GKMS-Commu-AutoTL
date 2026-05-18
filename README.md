@@ -24,3 +24,8 @@ Set the `GEMINI_API_KEY` variable in the 'config.py' file.
 
 ### For Vertex AI usage:
 Set the `VERTEX_AI_PROJECT` variable in the 'config.py' file.
+
+## TODO:
+  - Load the speaking styles dynamically, based on which characters are in a given commu. 
+  - Unslopify the `process_excel_files.py` 
+  - Add a concurrent executor to process the files in parallel, along with a RateLimiter to avoid exceeding API limits.
