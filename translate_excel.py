@@ -7,76 +7,43 @@ import pandas as pd
 from google import genai
 from google.genai import types
 
+from character_styles import CHARACTER_SPEAKING_STYLES
+
 # --- Import Configuration ---
-try:
-    from config import (
-        GEMINI_API_KEY,
-        GEMINI_MODEL,
-        OUTPUT_FOLDER_PATH,
-        SOURCE_FOLDER_PATH,
-        SOURCE_HEADER,
-        SOURCE_LANGUAGE,
-        SPEAKER_HEADER,
-        TARGET_HEADER,
-        TARGET_LANGUAGE,
-        TEMPERATURE,
-        TYPEMESSAGE_HEADER,
-    )
-
-    print("Successfully imported configuration from config.py.")
-except ImportError:
-    print("Error: config.py not found or required variables not defined.")
-    exit()
-
-# --- Import Translation Dictionary ---
-try:
-    from dictionary import NAME_TERM_TRANSLATIONS
-
-    print("Successfully imported NAME_TERM_TRANSLATIONS dictionary.")
-except ImportError:
-    print("Warning: dictionary.py not found. Proceeding without it.")
-    NAME_TERM_TRANSLATIONS = {}
-
-# --- Import Character Styles Dictionary ---
-try:
-    from character_styles import CHARACTER_SPEAKING_STYLES
-
-    print("Successfully imported CHARACTER_SPEAKING_STYLES dictionary.")
-except ImportError:
-    print("Warning: character_styles.py not found. Proceeding without it.")
-    CHARACTER_SPEAKING_STYLES = {}
-
-# --- Import Prompt Templates ---
-try:
-    from prompts import LINE_FORMAT_TEMPLATE, TRANSLATION_PROMPT_TEMPLATE
-
-    print("Successfully imported prompt templates from prompts.py.")
-except ImportError:
-    print("Error: prompts.py not found or templates not defined.")
-    exit()
-
-# --- Import Formatting Functions and Configuration ---
-try:
-    from formatting import (
-        ADV_PEVENT_CHOICE_LINE1_CHARS,
-        ADV_PEVENT_CHOICE_LINE2_CHARS,
-        ADV_PEVENT_CHOICE_LINE3_CHARS,
-        ADV_PEVENT_MAX_CHARS,
-        ADV_PEVENT_MAX_CHOICE_BREAKS,
-        ADV_PEVENT_PREFIX,
-        ADV_UNIT_PREFIX,
-        DEFAULT_MAX_CHARS_PER_LINE,
-        DEFAULT_MAX_DIALOGUE_LINE_BREAKS,
-        DIALOGUE_TYPES,
-        OTHER_MAX_CHARS,
-        OTHER_MAX_CHOICE_BREAKS,
-        wrap_text,
-    )
-
-    print("Successfully imported formatting functions.")
-except ImportError:
-    print("Error: formatting.py not found.")
-    exit()
+from config import (
+    GEMINI_API_KEY,
+    GEMINI_MODEL,
+    OUTPUT_FOLDER_PATH,
+    SOURCE_FOLDER_PATH,
+    SOURCE_HEADER,
+    SOURCE_LANGUAGE,
+    SPEAKER_HEADER,
+    TARGET_HEADER,
+    TARGET_LANGUAGE,
+    TEMPERATURE,
+    TYPEMESSAGE_HEADER,
+)
+from dictionary import NAME_TERM_TRANSLATIONS
+from formatting import (
+    ADV_PEVENT_CHOICE_LINE1_CHARS,
+    ADV_PEVENT_CHOICE_LINE2_CHARS,
+    ADV_PEVENT_CHOICE_LINE3_CHARS,
+    ADV_PEVENT_MAX_CHARS,
+    ADV_PEVENT_MAX_CHOICE_BREAKS,
+    ADV_PEVENT_PREFIX,
+    ADV_UNIT_PREFIX,
+    DEFAULT_MAX_CHARS_PER_LINE,
+    DEFAULT_MAX_DIALOGUE_LINE_BREAKS,
+    DIALOGUE_TYPES,
+    OTHER_MAX_CHARS,
+    OTHER_MAX_CHOICE_BREAKS,
+    wrap_text,
+)
+from prompts import (
+    LINE_FORMAT_TEMPLATE,
+    TRANSLATION_PROMPT_TEMPLATE,
+    TRANSLATION_SYSTEM_INSTRUCTIONS,
+)
 
 # --- API Setup ---
 try:
