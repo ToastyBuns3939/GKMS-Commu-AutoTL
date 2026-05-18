@@ -1,9 +1,6 @@
-# --- dictionary.py ---
 # This file contains a dictionary of pre-defined translations for specific names or terms.
 
-# Define the dictionary. The keys are the source (Japanese) terms/names,
-# and the values are their desired English translations.
-# Ensure consistent casing if needed, or handle case-insensitivity in the main script.
+# Source (Japanese) terms/names, {japanese:english} format
 NAME_TERM_TRANSLATIONS = {
     "咲季": "Saki",
     "佑芽": "Ume",
@@ -114,9 +111,3 @@ NAME_TERM_TRANSLATIONS = {
     # Add more names and terms as needed",
     # "Source Japanese Term"": ""Desired English Translation",
 }
-
-# You can add other dictionaries here if you have different types of terms
-# ANOTHER_DICTIONARY = {
-#     "Term A"": ""Translation A",
-#     "Term B"": ""Translation B",
-# }
