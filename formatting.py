@@ -1,11 +1,8 @@
-# This file contains functions related to text formatting and formatting configuration.
-
 import textwrap
 
 # --- Formatting Configuration ---
 # Approximate maximum characters per line for general text wrapping.
-# This is a fallback if specific rules don't apply.
-# You will need to adjust this value based on your font, font size, and Excel settings.
+# Adjust this value based on your font, font size, and Excel settings.
 DEFAULT_MAX_CHARS_PER_LINE = 40  # Example value - adjust as needed
 
 # List of message types considered as dialogue for the maximum line break rule
@@ -21,6 +18,7 @@ ADV_PEVENT_PREFIX = "adv_pevent_002_"
 ADV_UNIT_PREFIX = "adv_unit_"
 
 # --- Formatting Rules for "adv_pevent_" files (Single Line/Bubble Choices) ---
+
 # Approximate maximum characters per line for text in "adv_pevent_" files.
 # This value is used as a fallback if per-line limits are not set.
 ADV_PEVENT_MAX_CHARS = 29  # Adjust based on testing (approx. total half-width)
@@ -28,18 +26,20 @@ ADV_PEVENT_MAX_CHARS = 29  # Adjust based on testing (approx. total half-width)
 # Maximum number of line breaks allowed for "choice" type in "adv_pevent_" files.
 ADV_PEVENT_MAX_CHOICE_BREAKS = 3
 
-# *** IMPORTANT: Per-line character limits for "adv_pevent_" choices ***
+# Per-line character limits for "adv_pevent_" choices
+
 # Set these values to the exact character limit for each line in the game's choice boxes.
 # If set to None, the script will use ADV_PEVENT_MAX_CHARS as a single limit for wrapping.
 # These limits are used as guides for the text content *excluding* the extra space before line breaks.
-ADV_PEVENT_CHOICE_LINE1_CHARS = None  # Example: 10
-ADV_PEVENT_CHOICE_LINE2_CHARS = None  # Example: 10
-ADV_PEVENT_CHOICE_LINE3_CHARS = None  # Example: 9
+ADV_PEVENT_CHOICE_LINE1_CHARS = None
+ADV_PEVENT_CHOICE_LINE2_CHARS = None
+ADV_PEVENT_CHOICE_LINE3_CHARS = None
 
 
 # --- Formatting Rules for other files (Bubble Choices only) ---
 # Approximate maximum characters per line for text in other files.
 # This value should aim to fit the bubble choice box (approx. 34 full-width / 43 half-width).
+
 OTHER_MAX_CHARS = 43  # Adjust based on testing
 
 # Maximum number of line breaks allowed for "choice" type in other files.
@@ -72,7 +72,7 @@ def wrap_text(
 
     formatted_text = text.strip()  # Start with stripped text
 
-    # --- Apply Cleanup Rules (before wrapping) ---
+    # --- Apply Cleanup Rules  ---
 
     # Remove leading and trailing double quotes if present
     if formatted_text.startswith('"') and formatted_text.endswith('"'):
@@ -99,24 +99,22 @@ def wrap_text(
     # Convert half-width tilde (~) to full-width tilde (～)
     formatted_text = formatted_text.replace("~", "～")
 
-    # --- Rule 1: Remove trailing period for "choice" type (after initial cleanup) ---
+    # --- Remove trailing period for "choice" type ---
     if message_type == "choice" and formatted_text.endswith("."):
         formatted_text = formatted_text[:-1]
-        # print(f"  Removed trailing period for choice: {formatted_text}") # Debug
+        # print(f"Removed trailing period for choice: {formatted_text}") # Debug
 
     # --- Determine wrapping parameters based on file name and message type ---
     max_chars_for_wrapping = default_max_chars  # Default wrapping width
     max_breaks = None  # No default max breaks unless it's a dialogue type
 
     is_adv_pevent_file = file_name.startswith(adv_pevent_prefix)
-    is_adv_unit_file = file_name.startswith(
-        adv_unit_prefix
-    )  # Check for adv_unit_ prefix
+    is_adv_unit_file = file_name.startswith(adv_unit_prefix)
 
-    # If it's an adv_unit_ file, skip character-based wrapping by setting max_chars_for_wrapping to infinity
+    # If adv_unit_ , skip character-based wrapping
     if is_adv_unit_file:
         max_chars_for_wrapping = float("inf")
-        # print(f"  Skipping character wrapping for adv_unit_ file: {file_name}") # Debug
+        # print(f"Skipping character wrapping for adv_unit_ file: {file_name}") # Debug
     elif message_type == "choice":
         if is_adv_pevent_file:
             # Check if per-line limits are set for adv_pevent_ choices
@@ -125,29 +123,26 @@ def wrap_text(
                 and adv_pevent_choice_line2_chars is not None
                 and adv_pevent_choice_line3_chars is not None
             ):
-                # Per-line limits are set, we will handle wrapping manually below, prioritizing words
-                max_chars_for_wrapping = float(
-                    "inf"
-                )  # Disable textwrap.fill's width-based wrapping
+                # Disable textwrap.fill's width-based wrapping
+                max_chars_for_wrapping = float("inf")
                 max_breaks = adv_pevent_max_choice_breaks
-                # print(f"  Using per-line limits with word priority for adv_pevent_ choice: max_breaks={max_breaks}") # Debug
+                # print(f"Using per-line limits with word priority for adv_pevent_ choice: max_breaks={max_breaks}") # Debug
             else:
                 # Per-line limits not set, use the single ADV_PEVENT_MAX_CHARS for textwrap.fill
                 max_chars_for_wrapping = adv_pevent_max_chars
                 max_breaks = adv_pevent_max_choice_breaks
-                # print(f"  Using single max_chars for adv_pevent_ choice (per-line limits not set): max_chars={max_chars_for_wrapping}, max_breaks={max_breaks}") # Debug
+                # print(f"Using single max_chars for adv_pevent_ choice (per-line limits not set): max_chars={max_chars_for_wrapping}, max_breaks={max_breaks}") # Debug
         else:
             # Other files with choice type
             max_chars_for_wrapping = other_max_chars
             max_breaks = other_max_choice_breaks
-            # print(f"  Applying other choice formatting: max_chars={max_chars_for_wrapping}, max_breaks={max_breaks}") # Debug
+            # print(f"Applying other choice formatting: max_chars={max_chars_for_wrapping}, max_breaks={max_breaks}") # Debug
     elif message_type in dialogue_types:
         # Apply default dialogue max breaks for non-choice dialogue types
         max_breaks = default_max_dialogue_breaks
-        # print(f"  Applying default dialogue formatting: max_chars={max_chars_for_wrapping}") # Debug
+        # print(f"Applying default dialogue formatting: max_chars={max_chars_for_wrapping}") # Debug
     # else:
-    # No specific max breaks for other types (narration, etc.)
-    # print(f"  Applying default formatting: max_chars={max_chars_for_wrapping}") # Debug
+    # print(f"Applying default formatting: max_chars={max_chars_for_wrapping}") # Debug
 
     # --- Apply text wrapping ---
     # If per-line limits are set for adv_pevent_ choices, handle wrapping manually with word priority
@@ -210,7 +205,7 @@ def wrap_text(
         if words:
             wrapped_lines.append(" ".join(words))
 
-        # print(f"  Manual word-aware wrapping result (excluding space from limit): {wrapped_lines}") # Debug
+        # print(f"Manual word-aware wrapping result (excluding space from limit): {wrapped_lines}") # Debug
 
     else:
         # Use textwrap.fill for other cases (including adv_pevent_ choices if per-line limits not set)
@@ -235,13 +230,13 @@ def wrap_text(
         # Optionally add an ellipsis or marker to indicate truncation
         # if not wrapped_lines[-1].endswith('...'):
         #     wrapped_lines[-1] += '...'
-        # print(f"  Applied max breaks ({max_breaks}). Resulting lines: {len(wrapped_lines)}") # Debug
+        # print(f"Applied max breaks ({max_breaks}). Resulting lines: {len(wrapped_lines)}") # Debug
 
-    # --- Rule 2: Add extra space before line break for "choice" type ---
+    # --- Add extra space before line break for "choice" type ---
     # This rule applies specifically to "choice" types, regardless of file prefix
     if message_type == "choice" and len(wrapped_lines) > 1:
         final_text = " \n".join(wrapped_lines)
-        # print(f"  Added extra space before line breaks for choice type: {final_text}") # Debug
+        # print(f"Added extra space before line breaks for choice type: {final_text}") # Debug
     else:
         final_text = "\n".join(wrapped_lines)
 

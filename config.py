@@ -2,7 +2,10 @@
 
 # Google AI Studio API Key
 GEMINI_API_KEY = "API_KEY"
-GEMINI_MODEL = "gemini-3.1-flash-lite-preview"
+GEMINI_MODEL = "gemini-3-flash-preview"
+
+# Vertex AI stuff
+VERTEX_AI_PROJECT = "PROJECT_NAME"
 
 # Language settings
 TARGET_LANGUAGE = "English"

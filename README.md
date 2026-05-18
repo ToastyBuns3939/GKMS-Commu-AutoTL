@@ -1,0 +1,26 @@
+# GKMS-Commu-AutoTL
+
+A script to automatically translate Gakumas commus using the Gemini API.
+Work in progress.
+
+## Requirements
+This script uses the uv package manager.
+Install it using `pip install uv` or natively according to the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+Then, install the required dependencies using `uv sync`.
+
+## Usage
+Put the xlsx files in the 'IN' directory, then run the script.
+```
+uv run process_excel_files.py
+```
+Outputs the translated files in the 'OUT' directory.
+
+## Configuration
+This script uses the `config.py` file to set configuration variables.
+It supports both Google AI Studio and Vertex AI API.
+
+### For Google AI Studio usage:
+Set the `GEMINI_API_KEY` variable in the 'config.py' file.
+
+### For Vertex AI usage:
+Set the `VERTEX_AI_PROJECT` variable in the 'config.py' file.

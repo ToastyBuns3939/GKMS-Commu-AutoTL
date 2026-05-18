@@ -1,5 +1,3 @@
-# This file contains a dictionary of pre-defined translations for specific names or terms.
-
 # Source (Japanese) terms/names, {japanese:english} format
 NAME_TERM_TRANSLATIONS = {
     "咲季": "Saki",

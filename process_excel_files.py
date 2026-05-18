@@ -4,12 +4,9 @@ import shutil
 
 import openpyxl
 import pandas as pd
-from google import genai
-from google.genai import types
-
-from character_styles import CHARACTER_SPEAKING_STYLES
 
 # --- Import Configuration ---
+from character_styles import CHARACTER_SPEAKING_STYLES
 from config import (
     GEMINI_API_KEY,
     GEMINI_MODEL,
@@ -39,52 +36,11 @@ from formatting import (
     OTHER_MAX_CHOICE_BREAKS,
     wrap_text,
 )
-from prompts import (
-    LINE_FORMAT_TEMPLATE,
-    TRANSLATION_PROMPT_TEMPLATE,
-    TRANSLATION_SYSTEM_INSTRUCTIONS,
-)
-
-# --- API Setup ---
-try:
-    client = genai.Client(api_key=GEMINI_API_KEY)
-    print(f"Gemini client initialized using model: {GEMINI_MODEL}")
-except Exception as e:
-    print(f"Error initializing Gemini client: {e}")
-    exit()
-
-
-def translate_batch_with_gemini(batch_prompt, model_name, temperature):
-    """Calls the new Gemini API client with a single batch prompt."""
-    if (
-        not batch_prompt
-        or not isinstance(batch_prompt, str)
-        or not batch_prompt.strip()
-    ):
-        return ""
-
-    try:
-        response = client.models.generate_content(
-            model=model_name,
-            contents=batch_prompt,
-            config=types.GenerateContentConfig(
-                temperature=temperature,
-            ),
-        )
-
-        if response and response.text:
-            return response.text.strip()
-
-        return ""
-
-    except Exception as e:
-        print(f"Error translating batch: {e}")
-        return f"BATCH_TRANSLATION_ERROR: {e}"
+from prompts import LINE_FORMAT_TEMPLATE, TRANSLATION_PROMPT_TEMPLATE
+from translator import translate_batch_with_gemini
 
 
 # --- Main Processing Logic ---
-
-
 def process_excel_files_in_folder(
     source_folder_path,
     output_folder_path,
