@@ -32,7 +32,7 @@ Stutters: "あ、あの" -> "U-Uhm" or "Uh...".
 Symbols: Allow ☆ at ends.
 Ellipses: Replace trailing commas with ...
 Producer: Capitalize only as a proper name.
-Emphasis: Use <u>tags</u> instead of <em>.
+Emphasis: Use <i>tags</i> instead of <em>.
 Persona Mapping: For each input line, identify the speaker, consult their specific speaking style in the Context list, and apply only those traits to the English translation. Do not mix character traits.
 NEGATIVE CONSTRAINT: Do not include explanations or reasoning.
 NEGATIVE CONSTRAINT: Do not output the speaker names in the translated text.
